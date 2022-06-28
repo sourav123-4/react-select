@@ -4,10 +4,23 @@
 .select{
   border: 1px solid rgb(206, 192, 192);
   display: flex;
-  align-items: center;
+  align-items: baseline;
   padding: 0px 8px;
   margin-bottom: 5px;
   border-radius: 5px;
+  
+  
+}
+.select1{
+  border: 1px solid rgb(206, 192, 192);
+  display: flex;
+  align-items: baseline;
+  padding: 0px 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: rgb(206, 218, 218);
+  
+  
 }
 .select:hover{
   border: 2px solid rgb(19, 135, 202);
@@ -31,7 +44,7 @@
 }
 .input-tag{
   width: 100%;
-  text-align: center;
+  /* text-align: center; */
   padding: 1.1%;
 }
 .ico:hover{

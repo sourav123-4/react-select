@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Input, Icon, } from 'semantic-ui-react';
 import { useRef } from 'react';
+import clsx from 'clsx';
 import './App.css';
 
 function Reactselect(props) {
@@ -24,14 +25,34 @@ function Reactselect(props) {
   }, []);
   function onKeyDown(e) {
     if (e.keyCode === 8) {
+      if (search) {
+        return
+      }
       item?.pop()
+      setBool(!bool)
     }
   }
+  function onEnter(e) {
+    if (e.keyCode === 13) {
+      props?.options?.map((val) => {
+        if (val.label.toLowerCase().includes(search)) {
+          props?.isMulti ? setItem(item ? [...item, val.label] : [val.label]) : setItem([val.label])
+          setSearch("")
+        }
+        return null
+      })
+    }
+  }
+  const style = clsx({
+    ["select"] : props?.backgroundcolor==="primary",
+    ["select1"] : props?.backgroundcolor==="secondary",
+    ["select"] : !props?.backgroundcolor
+  })
   return (
     <div className="App">
       <h2>React-Select-App</h2>
       <div ref={ref} >
-        <div className='select' onClick={() => setBool(bool => !bool)}>
+        <div className={style} onClick={() => setBool(bool => !bool)}>
           {
             props?.isMulti ? item?.map((val) => {
               return <div className='values' key={val}>
@@ -52,7 +73,11 @@ function Reactselect(props) {
               onChange={(e) => setSearch(e.target.value)}
               onClick={() => setBool(bool => bool)}
               value={search}
-              onKeyDown={onKeyDown}
+              onKeyDown={(e) => {
+                onKeyDown(e)
+                onEnter(e)
+              }
+              }
             />
             :
             <div
@@ -63,9 +88,10 @@ function Reactselect(props) {
             </div>
           }
           <div className='last-icons'>
-            {item?.length > 0 ? <Icon name='close' size="large" onClick={() => setItem(null)} color="grey" /> : null}
-            <h3>|</h3>
-            <Icon name='chevron down' size="large" onClick={() => setBool(bool => bool)} />
+            {item?.length > 0 ? <Icon name='close' onClick={() => setItem(null)} color="grey" /> : null}
+            {/* <h4>|</h4> */}
+            <Icon name="ellipsis vertical" color='gray' />
+            <Icon name='chevron down' onClick={() => setBool(bool => bool)} />
           </div>
         </div>
         {
@@ -76,11 +102,13 @@ function Reactselect(props) {
                   return !item?.includes(data.label) ? <p key={data.label} onClick={() => {
                     props?.isMulti ? setItem(item ? [...item, data.label] : [data.label]) : setItem([data.label])
                     setBool(bool => !bool)
+                    setSearch("")
                   }}>{data.label}</p> : null
                 } else if (!search) {
                   return !item?.includes(data.label) ? <p key={data.value} onClick={() => {
                     props?.isMulti ? setItem(item ? [...item, data.label] : [data.label]) : setItem([data.label])
                     setBool(bool => !bool)
+                    setSearch("")
                   }} >{data.label}</p> : null
                 }
                 return null

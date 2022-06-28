@@ -13,6 +13,7 @@ function App() {
         options={options}
         isSearchable
         isMulti
+        // backgroundcolor="secondary"
       />
     </div>
   )
